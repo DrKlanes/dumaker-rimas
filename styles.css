@@ -268,14 +268,16 @@ a:hover, a:focus-visible { color: var(--bone); }
   margin: 0 auto;
   display: flex;
   align-items: center;
-  gap: var(--gap);
+  justify-content: center;          /* vídeo + texto: unidad compacta y centrada */
+  gap: clamp(1.5rem, 3vw, 3rem);
 }
 
-/* Alternancia de lado del vídeo */
+/* La alternancia es SOLO un espejo del mismo esqueleto: se invierte el orden
+   de las columnas, nada de empujar a extremos opuestos. */
 .rima--reverse .rima__inner { flex-direction: row-reverse; }
 
-.rima__media { flex: 0 0 auto; width: clamp(240px, 32vw, 340px); }
-.rima__text  { flex: 1 1 auto; min-width: 0; }
+.rima__media { flex: 0 0 auto; width: clamp(240px, 28vw, 300px); }
+.rima__text  { flex: 0 1 auto; min-width: 0; max-width: 32rem; }  /* no crece */
 
 .rima__num {
   margin: 0 0 0.35rem;
@@ -510,7 +512,7 @@ a:hover, a:focus-visible { color: var(--bone); }
 /* ---------------------------------------------------------------------------
    11. Responsive — móvil a una columna (vídeo arriba, texto debajo)
    ------------------------------------------------------------------------- */
-@media (max-width: 760px) {
+@media (max-width: 820px) {
   .rima__inner,
   .rima--reverse .rima__inner { flex-direction: column; }
   .rima__media {
