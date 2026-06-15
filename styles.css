@@ -221,35 +221,49 @@ a:hover, a:focus-visible { color: var(--bone); }
    ------------------------------------------------------------------------- */
 .rima {
   position: relative;
+  isolation: isolate;
+  overflow: hidden;
   padding: clamp(3.5rem, 9vh, 7rem) 1.25rem;
+  background: var(--ink);
 }
 
-.rima--dark {
-  background:
-    radial-gradient(90% 70% at 50% 30%, var(--ink-2), var(--ink) 75%);
+/* La ilustración de cada rima ES el fondo del bloque, a sangre (full-bleed) */
+.rima__bg {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  filter: contrast(1.05) saturate(1.06);
+}
+/* Ilustraciones muy oscuras (María, Roberto, Beatriz): se levantan para que
+   sean reconocibles como fondo. */
+.rima--lift .rima__bg {
+  filter: brightness(1.9) contrast(1.14) saturate(1.05);
 }
 
-/* Fondo rojo con textura de arañazos/sangre */
-.rima--blood {
-  background-color: var(--blood-bg);
-  background-image:
-    radial-gradient(120% 80% at 50% -15%, rgba(150,26,24,0.55), transparent 60%),
-    radial-gradient(80% 70% at 85% 115%, rgba(110,16,15,0.55), transparent 62%),
-    radial-gradient(60% 50% at 12% 80%, rgba(90,12,11,0.55), transparent 60%),
-    repeating-linear-gradient(112deg, rgba(0,0,0,0) 0 11px, rgba(0,0,0,0.05) 11px 12px),
-    repeating-linear-gradient(67deg, rgba(0,0,0,0) 0 17px, rgba(0,0,0,0.035) 17px 18px);
-}
-.rima--blood::before {
-  /* veladura de viñeta para asentar la textura */
+/* Veladura SOLO sobre el lado del texto: la imagen respira en el del vídeo. */
+.rima::after {
   content: "";
-  position: absolute; inset: 0;
-  background: radial-gradient(130% 100% at 50% 50%, transparent 55%, rgba(0,0,0,0.55));
+  position: absolute;
+  inset: 0;
+  z-index: 1;
   pointer-events: none;
+  background:
+    linear-gradient(to right, rgba(8,3,3,0) 32%, rgba(8,3,3,0.48) 70%, rgba(8,3,3,0.80) 100%),
+    linear-gradient(to bottom, rgba(8,3,3,0.30), rgba(8,3,3,0) 38%, rgba(8,3,3,0.42));
+}
+.rima--reverse::after {
+  background:
+    linear-gradient(to left, rgba(8,3,3,0) 32%, rgba(8,3,3,0.48) 70%, rgba(8,3,3,0.80) 100%),
+    linear-gradient(to bottom, rgba(8,3,3,0.30), rgba(8,3,3,0) 38%, rgba(8,3,3,0.42));
 }
 
 .rima__inner {
   position: relative;
-  z-index: 1;
+  z-index: 2;
   max-width: var(--maxw);
   margin: 0 auto;
   display: flex;
@@ -257,8 +271,8 @@ a:hover, a:focus-visible { color: var(--bone); }
   gap: var(--gap);
 }
 
-/* Alternancia de lado: las sangrientas llevan el vídeo a la derecha */
-.rima--blood .rima__inner { flex-direction: row-reverse; }
+/* Alternancia de lado del vídeo */
+.rima--reverse .rima__inner { flex-direction: row-reverse; }
 
 .rima__media { flex: 0 0 auto; width: clamp(240px, 32vw, 340px); }
 .rima__text  { flex: 1 1 auto; min-width: 0; }
@@ -269,20 +283,19 @@ a:hover, a:focus-visible { color: var(--bone); }
   font-weight: 700;
   letter-spacing: 0.3em;
   font-size: 0.85rem;
-  color: var(--blood);
-  opacity: 0.85;
+  color: #ff8480;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.95);
 }
 
 .rima__title {
   margin: 0 0 1.25rem;
   font-family: var(--script);
   font-weight: 400;
-  color: var(--blood);
+  color: #ff5a54;
   font-size: clamp(2.6rem, 7vw, 4.5rem);
   line-height: 0.95;
-  text-shadow: 0 3px 22px rgba(0,0,0,0.55);
+  text-shadow: 0 3px 16px rgba(0,0,0,0.95), 0 1px 3px rgba(0,0,0,0.85);
 }
-.rima--blood .rima__title { color: #ff6a64; text-shadow: 0 3px 18px rgba(0,0,0,0.7); }
 
 /* Poema */
 .poem { font-family: var(--serif); }
@@ -290,12 +303,11 @@ a:hover, a:focus-visible { color: var(--bone); }
   margin: 0 0 1.4rem;
   font-size: clamp(1.05rem, 1.5vw, 1.3rem);
   line-height: 1.75;
-  color: var(--bone);
+  color: #f4eee5;
+  text-shadow: 0 1px 5px rgba(0,0,0,0.95), 0 0 16px rgba(0,0,0,0.7);
 }
 .poem__stanza:last-child { margin-bottom: 0; }
-.rima--blood .poem__stanza { color: #f3e9df; }
-.poem__stanza q, .poem em { font-style: italic; color: var(--blood-soft); }
-.rima--blood .poem__stanza q { color: #ffd9d6; }
+.poem em { font-style: italic; color: #ffb3b0; }
 
 /* ---------------------------------------------------------------------------
    7. Facade de vídeo (carga diferida de YouTube)
@@ -327,19 +339,25 @@ a:hover, a:focus-visible { color: var(--bone); }
   background-image: var(--poster);
   background-size: cover;
   background-position: center 28%;
-  filter: grayscale(0.45) contrast(1.05) brightness(0.78);
+  filter: grayscale(0.18) contrast(1.05) brightness(0.92);
   transition: transform 0.6s ease, filter 0.6s ease;
 }
+/* Pósters de ilustración oscura: se levantan para reconocerse en la tarjeta */
+.rima--lift .video__poster { filter: grayscale(0.15) contrast(1.12) brightness(1.5); }
 .video:hover .video__poster,
 .video:focus-visible .video__poster {
   transform: scale(1.05);
-  filter: grayscale(0.1) contrast(1.08) brightness(0.9);
+  filter: grayscale(0) contrast(1.06) brightness(1.02);
+}
+.rima--lift .video:hover .video__poster,
+.rima--lift .video:focus-visible .video__poster {
+  filter: grayscale(0) contrast(1.12) brightness(1.65);
 }
 .video::after {
   /* degradado para asentar el botón sobre el póster */
   content: "";
   position: absolute; inset: 0;
-  background: radial-gradient(60% 50% at 50% 50%, rgba(0,0,0,0.15), rgba(0,0,0,0.55));
+  background: radial-gradient(62% 52% at 50% 50%, rgba(0,0,0,0.06), rgba(0,0,0,0.46));
   pointer-events: none;
 }
 
@@ -494,7 +512,7 @@ a:hover, a:focus-visible { color: var(--bone); }
    ------------------------------------------------------------------------- */
 @media (max-width: 760px) {
   .rima__inner,
-  .rima--blood .rima__inner { flex-direction: column; }
+  .rima--reverse .rima__inner { flex-direction: column; }
   .rima__media {
     width: min(82vw, 320px);
     margin: 0 auto;
@@ -502,6 +520,12 @@ a:hover, a:focus-visible { color: var(--bone); }
   }
   .rima__text { text-align: center; }
   .rima__title { text-align: center; }
+  /* En móvil el texto va debajo del vídeo: oscurece la franja inferior */
+  .rima::after,
+  .rima--reverse::after {
+    background: linear-gradient(to bottom,
+      rgba(8,3,3,0.16) 0%, rgba(8,3,3,0.30) 40%, rgba(8,3,3,0.74) 100%);
+  }
 }
 
 /* ---------------------------------------------------------------------------
