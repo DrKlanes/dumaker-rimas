@@ -1,0 +1,19 @@
+# Copias originales sin optimizar (no se publican; respaldo local)
+_originals/
+
+# CNAME: preparado pero NO activado todavía. Si se sube, GitHub fija el dominio
+# personalizado y redirige la URL github.io (que no resolvería hasta tener DNS).
+# Se activa (quitar esta línea + commit) cuando el DNS de cdmon esté puesto.
+CNAME
+
+# Archivo temporal de la descarga de fuentes
+fonts-source.css
+
+# Herramientas locales de previsualización
+.claude/
+
+# Basura del sistema
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
