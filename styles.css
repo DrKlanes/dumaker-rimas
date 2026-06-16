@@ -164,7 +164,7 @@ a:hover, a:focus-visible { color: var(--bone); }
 .hero__line1 {
   display: block;
   font-family: var(--caps);
-  font-weight: 900;
+  font-weight: 700;   /* Cinzel Decorative solo trae 400/700/900; 700 ≈ el 600 pedido */
   text-transform: uppercase;
   letter-spacing: 0.12em;
   font-size: clamp(1.25rem, 5.2vw, 3rem);
@@ -206,10 +206,16 @@ a:hover, a:focus-visible { color: var(--bone); }
   bottom: clamp(1rem, 4vh, 2.5rem);
   left: 50%;
   transform: translateX(-50%);
-  color: var(--bone-dim);
-  font-size: 1.5rem;
+  color: var(--blood-soft);
+  line-height: 0;
+  opacity: 0.85;
+  filter: drop-shadow(0 2px 10px rgba(201,47,46,0.45));
+  transition: color 0.3s ease, opacity 0.3s ease;
   animation: bob 2.4s ease-in-out infinite;
 }
+.hero__scroll svg { display: block; width: clamp(30px, 5vw, 40px); height: auto; }
+.hero__scroll:hover,
+.hero__scroll:focus-visible { color: #ff7a74; opacity: 1; }
 
 @keyframes bob {
   0%, 100% { transform: translate(-50%, 0); opacity: 0.55; }
@@ -276,15 +282,15 @@ a:hover, a:focus-visible { color: var(--bone); }
    de las columnas, nada de empujar a extremos opuestos. */
 .rima--reverse .rima__inner { flex-direction: row-reverse; }
 
-.rima__media { flex: 0 0 auto; width: clamp(240px, 28vw, 300px); }
+.rima__media { flex: 0 0 auto; width: clamp(280px, 32vw, 360px); }
 .rima__text  { flex: 0 1 auto; min-width: 0; max-width: 32rem; }  /* no crece */
 
 .rima__num {
-  margin: 0 0 0.35rem;
-  font-family: var(--caps);
-  font-weight: 700;
-  letter-spacing: 0.3em;
-  font-size: 0.85rem;
+  margin: 0 0 0.4rem;
+  font-family: var(--serif);   /* Baskervville: números romanos elegantes */
+  font-weight: 400;
+  letter-spacing: 0.15em;
+  font-size: 1.2rem;
   color: #ff8480;
   text-shadow: 0 1px 8px rgba(0,0,0,0.95);
 }
@@ -427,6 +433,9 @@ a:hover, a:focus-visible { color: var(--bone); }
 .gallery__track {
   display: flex;
   gap: clamp(0.75rem, 2vw, 1.5rem);
+  width: fit-content;        /* centra en wide; permite scroll cuando desborda */
+  max-width: 100%;
+  margin-inline: auto;
   padding: 0.5rem clamp(1rem, 5vw, 3rem) 1.5rem;
   overflow-x: auto;
   scroll-snap-type: x mandatory;
